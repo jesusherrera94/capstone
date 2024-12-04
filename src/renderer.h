@@ -13,6 +13,8 @@ class Renderer {
 
   void Render(Snake const snake, SDL_Point const &food);
   void UpdateWindowTitle(int score, int fps);
+  SDL_Window *GetWindow() const { return sdl_window; }
+  SDL_Renderer *GetRenderer() const { return sdl_renderer; }
 
  private:
   SDL_Window *sdl_window;

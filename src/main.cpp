@@ -2,7 +2,7 @@
 #include "controller.h"
 #include "game.h"
 #include "renderer.h"
-
+#include "score_manager.h"
 int main() {
   constexpr std::size_t kFramesPerSecond{60};
   constexpr std::size_t kMsPerFrame{1000 / kFramesPerSecond};
@@ -13,8 +13,12 @@ int main() {
 
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
+  ScoreManager scoreManager;
   Game game(kGridWidth, kGridHeight);
   game.Run(controller, renderer, kMsPerFrame);
+  // this causes segmentation fault because the window is distroyed before this line
+  // look for another position in code.
+  scoreManager.RequestPlayerName(renderer.GetWindow(), renderer.GetRenderer());
   std::cout << "Game has terminated successfully!\n";
   std::cout << "Score: " << game.GetScore() << "\n";
   std::cout << "Size: " << game.GetSize() << "\n";
