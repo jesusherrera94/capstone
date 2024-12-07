@@ -9,13 +9,13 @@ class ScoreManager {
 public:
     ScoreManager();
     ~ScoreManager();
-    void RequestPlayerName(SDL_Window* window, SDL_Renderer* renderer);
+    void RequestPlayerName(const int score);
     void SaveScore(const std::string& playerName, int score);
     void DisplayScores(SDL_Window* window, SDL_Renderer* renderer);
 
 private:
     std::vector<std::pair<std::string, int>> scores;
-    std::string GetPlayerName(SDL_Window* window, SDL_Renderer* renderer);
+    std::string GetPlayerName();
 };
 
 #endif

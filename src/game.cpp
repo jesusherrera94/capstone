@@ -1,6 +1,8 @@
-#include "game.h"
 #include <iostream>
 #include "SDL.h"
+
+#include "game.h"
+
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
@@ -11,13 +13,14 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
-               std::size_t target_frame_duration) {
+               std::size_t target_frame_duration, ScoreManager &scoreManager) {
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
   Uint32 frame_end;
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
+  bool nameHasBeenCalled = false;
 
   while (running) {
     frame_start = SDL_GetTicks();
@@ -25,6 +28,10 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
+    if (!nameHasBeenCalled && !snake.alive) {
+      nameHasBeenCalled = true;
+      scoreManager.RequestPlayerName(score);
+    }
     renderer.Render(snake, food);
 
     frame_end = SDL_GetTicks();
@@ -48,6 +55,9 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       SDL_Delay(target_frame_duration - frame_duration);
     }
   }
+  // after the game has ended
+  //scoreManager.RequestPlayerName();
+
 }
 
 void Game::PlaceFood() {
