@@ -4,6 +4,7 @@
 #include <vector>
 #include "SDL.h"
 #include "snake.h"
+#include "livesManager.h"
 
 class Renderer {
  public:
@@ -12,7 +13,7 @@ class Renderer {
   ~Renderer();
 
   void Render(Snake const snake, SDL_Point const &food);
-  void UpdateWindowTitle(int score, int fps);
+  void UpdateWindowTitle(int score, int fps, LivesManager const &livesManager);
   SDL_Window *GetWindow() const { return sdl_window; }
   SDL_Renderer *GetRenderer() const { return sdl_renderer; }
 

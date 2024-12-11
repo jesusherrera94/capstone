@@ -2,11 +2,15 @@
 #define GAME_H
 
 #include <random>
+#include <memory>
 #include "SDL.h"
+
 #include "controller.h"
 #include "renderer.h"
 #include "snake.h"
 #include "score_manager.h"
+#include "livesManager.h"
+
 class Game {
  public:
   Game(std::size_t grid_width, std::size_t grid_height);
@@ -16,8 +20,10 @@ class Game {
   int GetSize() const;
 
  private:
-  Snake snake;
+  std::unique_ptr<Snake> snake;
   SDL_Point food;
+  std::unique_ptr<LivesManager> livesManager;
+  
 
   std::random_device dev;
   std::mt19937 engine;
@@ -28,6 +34,7 @@ class Game {
 
   void PlaceFood();
   void Update();
+  void initializeSnake(std::size_t grid_width, std::size_t grid_height);
 };
 
 #endif

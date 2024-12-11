@@ -58,9 +58,24 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) 
   // Check if the snake has died.
   for (auto const &item : body) {
     if (current_head_cell.x == item.x && current_head_cell.y == item.y) {
-      alive = false;
+      std::cout << "Lives: xxxxxxx" << "\n";
+      livesManager.decreaseLife();
+      if (livesManager.getLives() > 0) {
+        resetSnake();
+      } else {
+        alive = false;
+      }
     }
   }
+}
+
+void Snake::resetSnake() {
+  size = 1;
+  body.clear();
+  head_x = grid_width / 2;
+  head_y = grid_height / 2;
+  speed = 0.1f;
+  direction = Direction::kUp;
 }
 
 void Snake::GrowBody() { growing = true; }
