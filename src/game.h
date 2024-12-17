@@ -3,6 +3,7 @@
 
 #include <random>
 #include <memory>
+#include <vector>
 #include "SDL.h"
 
 #include "controller.h"
@@ -10,6 +11,7 @@
 #include "snake.h"
 #include "score_manager.h"
 #include "livesManager.h"
+#include "power_up.h"
 
 class Game {
  public:
@@ -23,6 +25,7 @@ class Game {
   std::unique_ptr<Snake> snake;
   SDL_Point food;
   std::unique_ptr<LivesManager> livesManager;
+  std::vector<std::shared_ptr<PowerUp>> powerUps;
   
 
   std::random_device dev;
@@ -35,6 +38,7 @@ class Game {
   void PlaceFood();
   void Update();
   void initializeSnake(std::size_t grid_width, std::size_t grid_height);
+  void PlacePowerUp();
 };
 
 #endif

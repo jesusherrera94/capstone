@@ -2,6 +2,9 @@
 #include "SDL.h"
 
 #include "game.h"
+#include "speed_booster.h"
+#include "slow_down.h"
+#include "extra_life.h"
 
 const int INITIAL_LIVES = 3;
 
@@ -12,6 +15,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
       livesManager(std::make_unique<LivesManager>(INITIAL_LIVES)) {
         initializeSnake(grid_width, grid_height);
         PlaceFood();
+        PlacePowerUp();
 }
 
 void Game::initializeSnake(std::size_t grid_width, std::size_t grid_height) {
@@ -38,7 +42,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       nameHasBeenCalled = true;
       scoreManager.RequestPlayerName(score);
     }
-    renderer.Render(*snake, food);
+    renderer.Render(*snake, food, powerUps);
 
     frame_end = SDL_GetTicks();
 
@@ -78,6 +82,34 @@ void Game::PlaceFood() {
   }
 }
 
+
+void Game::PlacePowerUp() {
+    int x, y;
+    while (true) {
+        x = random_w(engine);
+        y = random_h(engine);
+        // Check that the location is not occupied by a snake item or food before placing power-up.
+        if (!snake->SnakeCell(x, y) && !(food.x == x && food.y == y)) {
+            std::shared_ptr<PowerUp> powerUp;
+            int powerUpType = rand() % 3; // 3 possibilities since there are 3 power-ups
+            switch (powerUpType) {
+                case 0:
+                    powerUp = std::make_shared<SpeedBooster>();
+                    break;
+                case 1:
+                    powerUp = std::make_shared<SlowDown>();
+                    break;
+                case 2:
+                    powerUp = std::make_shared<ExtraLife>(*livesManager);
+                    break;
+            }
+            powerUp->position = {x, y};
+            powerUps.push_back(powerUp);
+            return;
+        }
+    }
+}
+
 void Game::Update() {
   if (!snake->alive) return;
 
@@ -94,6 +126,17 @@ void Game::Update() {
     snake->GrowBody();
     snake->speed += 0.02;
   }
+
+  // Check for power-up collisions
+    for (auto it = powerUps.begin(); it != powerUps.end();) {
+        if ((*it)->position.x == new_x && (*it)->position.y == new_y) {
+            (*it)->ApplyEffect(*snake);
+            it = powerUps.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
 }
 
 int Game::GetScore() const { return score; }

@@ -38,7 +38,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food) {
+void Renderer::Render(Snake const snake, SDL_Point const &food, std::vector<std::shared_ptr<PowerUp>> const &powerUps) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -52,6 +52,11 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   block.x = food.x * block.w;
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
+
+  // Render power-ups
+  for (const auto &powerUp : powerUps) {
+    powerUp->Render(sdl_renderer);
+  }
 
   // Render snake's body
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
