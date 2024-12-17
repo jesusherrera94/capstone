@@ -55,7 +55,7 @@ void Renderer::Render(Snake const snake, SDL_Point const &food, std::vector<std:
 
   // Render power-ups
   for (const auto &powerUp : powerUps) {
-    powerUp->Render(sdl_renderer);
+    powerUp->Render(sdl_renderer, block);
   }
 
   // Render snake's body

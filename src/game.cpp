@@ -91,6 +91,7 @@ void Game::PlacePowerUp() {
         // Check that the location is not occupied by a snake item or food before placing power-up.
         if (!snake->SnakeCell(x, y) && !(food.x == x && food.y == y)) {
             std::shared_ptr<PowerUp> powerUp;
+            // find a better way to randomly select power-up
             int powerUpType = rand() % 3; // 3 possibilities since there are 3 power-ups
             switch (powerUpType) {
                 case 0:

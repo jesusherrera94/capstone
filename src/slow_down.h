@@ -13,8 +13,9 @@ public:
         snake.speed -= 0.05;
     }
 
-    void Render(SDL_Renderer *renderer) override {
-        SDL_Rect block{position.x * 32, position.y * 32, 32, 32};
+    void Render(SDL_Renderer *renderer, SDL_Rect block) override {
+        block.x = position.x * block.w;
+        block.y = position.y * block.h;
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF); // Blue color
         SDL_RenderFillRect(renderer, &block);
     }

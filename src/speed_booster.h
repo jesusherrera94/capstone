@@ -12,9 +12,10 @@ public:
         snake.speed += 0.05;
     }
 
-    void Render(SDL_Renderer *renderer) override {
-        std::cout << "Rendering speed booster" << std::endl;
-        SDL_Rect block{position.x * 32, position.y * 32, 32, 32};
+    void Render(SDL_Renderer *renderer, SDL_Rect block) override {
+        // SDL_Rect block{position.x * 32, position.y * 32, 32, 32};
+        block.x = position.x * block.w;
+        block.y = position.y * block.h;
         SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF); // Red color
         SDL_RenderFillRect(renderer, &block);
     }
