@@ -16,6 +16,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
         initializeSnake(grid_width, grid_height);
         PlaceFood();
         PlacePowerUp();
+        std::thread(&Game::PowerUpThread, this).detach();
 }
 
 void Game::initializeSnake(std::size_t grid_width, std::size_t grid_height) {
@@ -83,6 +84,15 @@ void Game::PlaceFood() {
 }
 
 
+void Game::PowerUpThread() {
+    std::uniform_int_distribution<int> random_interval(5, 15); // Random interval between 5 and 15 seconds
+    while (snake->alive) {
+        std::this_thread::sleep_for(std::chrono::seconds(random_interval(engine)));
+        PlacePowerUp();
+    }
+}
+
+
 void Game::PlacePowerUp() {
     int x, y;
     while (true) {
@@ -91,7 +101,7 @@ void Game::PlacePowerUp() {
         // Check that the location is not occupied by a snake item or food before placing power-up.
         if (!snake->SnakeCell(x, y) && !(food.x == x && food.y == y)) {
             std::shared_ptr<PowerUp> powerUp;
-            // find a better way to randomly select power-up
+            //TODO: find a better way to randomly select power-up
             int powerUpType = rand() % 3; // 3 possibilities since there are 3 power-ups
             switch (powerUpType) {
                 case 0:
@@ -105,7 +115,10 @@ void Game::PlacePowerUp() {
                     break;
             }
             powerUp->position = {x, y};
-            powerUps.push_back(powerUp);
+            {
+                std::lock_guard<std::mutex> lock(powerUpsMutex);
+                powerUps.push_back(powerUp);
+            }
             return;
         }
     }
@@ -129,12 +142,15 @@ void Game::Update() {
   }
 
   // Check for power-up collisions
-    for (auto it = powerUps.begin(); it != powerUps.end();) {
-        if ((*it)->position.x == new_x && (*it)->position.y == new_y) {
-            (*it)->ApplyEffect(*snake);
-            it = powerUps.erase(it);
-        } else {
-            ++it;
+    {
+        std::lock_guard<std::mutex> lock(powerUpsMutex);
+        for (auto it = powerUps.begin(); it != powerUps.end();) {
+            if ((*it)->position.x == new_x && (*it)->position.y == new_y) {
+                (*it)->ApplyEffect(*snake);
+                it = powerUps.erase(it);
+            } else {
+                ++it;
+            }
         }
     }
 

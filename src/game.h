@@ -4,6 +4,9 @@
 #include <random>
 #include <memory>
 #include <vector>
+#include <thread>
+#include <chrono>
+#include <mutex>
 #include "SDL.h"
 
 #include "controller.h"
@@ -26,7 +29,7 @@ class Game {
   SDL_Point food;
   std::unique_ptr<LivesManager> livesManager;
   std::vector<std::shared_ptr<PowerUp>> powerUps;
-  
+  std::mutex powerUpsMutex;
 
   std::random_device dev;
   std::mt19937 engine;
@@ -39,6 +42,7 @@ class Game {
   void Update();
   void initializeSnake(std::size_t grid_width, std::size_t grid_height);
   void PlacePowerUp();
+  void PowerUpThread();
 };
 
 #endif
