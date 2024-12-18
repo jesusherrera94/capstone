@@ -50,14 +50,17 @@ In this project, you can build your own C++ application or extend this Snake gam
 
 ## Power ups
 - Red: speed up
+<br>
   <img src="/assets/images/red.png"/>
 
 - Blue: Slow down
+<br>
   <img src="/assets/images/blue.png"/>
 
 - Green: extra life
+<br>
   <img src="/assets/images/green.png"/>
-  
+
 ## Controls
     movement:               arrows keys
     pause:                   p
