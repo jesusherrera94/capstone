@@ -15,10 +15,11 @@
 #include "score_manager.h"
 #include "livesManager.h"
 #include "power_up.h"
+#include "state_manager.h"
 
 class Game {
  public:
-  Game(std::size_t grid_width, std::size_t grid_height);
+  Game(std::size_t grid_width, std::size_t grid_height, StateManager &stateManager);
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration, ScoreManager &scoreManager);
   int GetScore() const;
@@ -35,6 +36,7 @@ class Game {
   std::mt19937 engine;
   std::uniform_int_distribution<int> random_w;
   std::uniform_int_distribution<int> random_h;
+  StateManager &stateManager;
 
   int score{0};
 

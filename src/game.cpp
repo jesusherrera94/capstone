@@ -8,11 +8,12 @@
 
 const int INITIAL_LIVES = 3;
 
-Game::Game(std::size_t grid_width, std::size_t grid_height)
+Game::Game(std::size_t grid_width, std::size_t grid_height, StateManager &stateManager)
     : engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
       random_h(0, static_cast<int>(grid_height - 1)),
-      livesManager(std::make_unique<LivesManager>(INITIAL_LIVES)) {
+      livesManager(std::make_unique<LivesManager>(INITIAL_LIVES)),
+      stateManager(stateManager) {
         initializeSnake(grid_width, grid_height);
         PlaceFood();
         PlacePowerUp();
@@ -37,13 +38,15 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, *snake);
-    Update();
-    if (!nameHasBeenCalled && !snake->alive) {
-      nameHasBeenCalled = true;
-      scoreManager.RequestPlayerName(score);
+    controller.HandleInput(running, *snake, stateManager);
+    if (stateManager.GetState() == StateManager::GameState::RUNNING) { 
+      Update();
+      if (!nameHasBeenCalled && !snake->alive) {
+        nameHasBeenCalled = true;
+        scoreManager.RequestPlayerName(score);
+      }
+      renderer.Render(*snake, food, powerUps);
     }
-    renderer.Render(*snake, food, powerUps);
 
     frame_end = SDL_GetTicks();
 
@@ -88,6 +91,8 @@ void Game::PowerUpThread() {
     std::uniform_int_distribution<int> random_interval(5, 15); // Random interval between 5 and 15 seconds
     while (snake->alive) {
         std::this_thread::sleep_for(std::chrono::seconds(random_interval(engine)));
+        std::unique_lock<std::mutex> lk(stateManager.cv_m);
+        stateManager.cv.wait(lk, [this] { return stateManager.GetState() == StateManager::GameState::RUNNING; });
         PlacePowerUp();
     }
 }
@@ -125,7 +130,10 @@ void Game::PlacePowerUp() {
 }
 
 void Game::Update() {
-  if (!snake->alive) return;
+  if (!snake->alive) { 
+      stateManager.state = StateManager::GameState::GAME_OVER;
+      return; 
+    }
 
   snake->Update();
 
