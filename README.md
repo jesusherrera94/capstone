@@ -65,6 +65,37 @@ In this project, you can build your own C++ application or extend this Snake gam
     movement:               arrows keys
     pause:                   p
 
+# Rubric completed
+## README
+  - [x] A README with instructions is included with the project.
+  - [x] The README indicates the new features you added to the game.
+  - [x] The README includes information about each rubric point addressed.
+## Compiling and Testing
+  - [x] The submission must compile and run without errors on the Udacity project workspace.
+## Loops, Functions, I/O
+  - [x] The project demonstrates an understanding of C++ functions and control structures.
+  - [x] The project reads data from a file and process the data, or the program writes data to a file.
+  - [x] The project accepts user input and processes the input.
+  - [x] The project uses data structures and immutable variables.
+## Object Oriented Programming
+  - [x] One or more classes are added to the project with appropriate access specifiers for class members.
+  - [x] Class constructors utilize member initialization lists.
+  - [x] Classes abstract implementation details from their interfaces.
+  - [ ] Overloaded functions allow the same function to operate on different parameters.
+  - [x] Classes follow an appropriate inheritance hierarchy with virtual and override functions.
+  - [ ] Templates generalize functions or classes in the project.
+## Memory Management
+  - [x] The project makes use of references in function declarations.
+  - [x] The project uses destructors appropriately.
+  - [ ] The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate.
+  - [x] The project follows the Rule of 5.
+  - [x] The project uses move semantics to move data instead of copying it, where possible.
+  - [x] The project uses smart pointers instead of raw pointers.
+## Concurrency
+  - [x] The project uses multithreading.
+  - [ ] A promise and future is used in the project.
+  - [x] A mutex or lock is used in the project.
+  - [x] A condition variable is used in the project.
 ## CC Attribution-ShareAlike 4.0 International
 
 
