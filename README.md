@@ -67,7 +67,7 @@ In this project, you can build your own C++ application or extend this Snake gam
 
 # Rubric completed
 ## README
-  - [x] A README with instructions is included with the project.
+  - [x] A README with instructions is included with the project.
   - [x] The README indicates the new features you added to the game.
   - [x] The README includes information about each rubric point addressed.
 ## Compiling and Testing
