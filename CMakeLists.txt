@@ -44,5 +44,3 @@ endif()
 
 include_directories(${SDL2_INCLUDE_DIRS} src)
 
-#string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
-#target_link_libraries(SnakeGame ${SDL2_LIBRARIES})

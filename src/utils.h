@@ -7,6 +7,7 @@
 #include <string>
 
 namespace Utils {
+    
     std::string removeWordFromString(const std::string &path, const std::string &toRemove = "build/") {
         size_t pos = path.find(toRemove);
         if (pos != std::string::npos) {

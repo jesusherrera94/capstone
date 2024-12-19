@@ -9,7 +9,6 @@
 #include "utils.h"
 
 ScoreManager::ScoreManager() {
-    // Initialize SDL_ttf
     if (TTF_Init() == -1) {
         std::cerr << "Failed to initialize TTF: " << TTF_GetError() << std::endl;
     }
@@ -75,7 +74,7 @@ void ScoreManager::renderMultilineText(SDL_Renderer* renderer, TTF_Font* font, c
         SDL_RenderCopy(renderer, textTexture, NULL, &renderQuad);
         SDL_DestroyTexture(textTexture);
 
-        yOffset += textHeight + 5; // Adjust vertical spacing between lines
+        yOffset += textHeight + 5;
     }
 }
 

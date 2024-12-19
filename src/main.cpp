@@ -20,9 +20,6 @@ int main() {
 
   Game game(kGridWidth, kGridHeight, stateManager);
   game.Run(controller, renderer, kMsPerFrame, scoreManager);
-  // this causes segmentation fault because the window is distroyed before this line
-  // look for another position in code.
-  // scoreManager.RequestPlayerName();
   std::cout << "Game has terminated successfully!\n";
   std::cout << "Score: " << game.GetScore() << "\n";
   std::cout << "Size: " << game.GetSize() << "\n";

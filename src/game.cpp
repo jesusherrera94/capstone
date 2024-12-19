@@ -88,7 +88,7 @@ void Game::PlaceFood() {
 
 
 void Game::PowerUpThread() {
-    std::uniform_int_distribution<int> random_interval(5, 15); // Random interval between 5 and 15 seconds
+    std::uniform_int_distribution<int> random_interval(5, 15); 
     while (snake->alive) {
         std::this_thread::sleep_for(std::chrono::seconds(random_interval(engine)));
         std::unique_lock<std::mutex> lk(stateManager.cv_m);
@@ -103,10 +103,8 @@ void Game::PlacePowerUp() {
     while (true) {
         x = random_w(engine);
         y = random_h(engine);
-        // Check that the location is not occupied by a snake item or food before placing power-up.
         if (!snake->SnakeCell(x, y) && !(food.x == x && food.y == y)) {
             std::shared_ptr<PowerUp> powerUp;
-            //TODO: find a better way to randomly select power-up
             int powerUpType = rand() % 3; // 3 possibilities since there are 3 power-ups
             switch (powerUpType) {
                 case 0:
@@ -140,11 +138,9 @@ void Game::Update() {
   int new_x = static_cast<int>(snake->head_x);
   int new_y = static_cast<int>(snake->head_y);
 
-  // Check if there's food over here
   if (food.x == new_x && food.y == new_y) {
     score++;
     PlaceFood();
-    // Grow snake and increase speed.
     snake->GrowBody();
     snake->speed += 0.02;
   }
